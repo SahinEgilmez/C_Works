@@ -1,0 +1,77 @@
+/*##########################################################################  */
+/*                                                                            */
+/* HW07_Sahin_Egilmez_131044059_part1.c                                       */
+/* 									      */
+/* Created on 12/04/2015 by Sahin Egilmez                                     */
+/*                                                                            */
+/*Description                                                                 */
+/*                                                                            */
+/*C program for checking that how many times a given string is used in a given*/ 
+/*string.                                                                     */
+/*Inputs:                                                                     */
+/*      - Two strings                                                         */
+/*Outputs:                                                                    */
+/*	- Print to how many times a given string is used in a given string.   */
+/*########################################################################### */
+/*----------------------------------------------------------------------------*/
+/*                           Includes                                         */
+/*----------------------------------------------------------------------------*/
+#include<stdio.h>
+#include<string.h>
+/*----------------------------------------------------------------------------*/
+/*                           Defines                                          */
+/*----------------------------------------------------------------------------*/
+#define STR_SIZE 50
+/*########################################################################### ­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­*/
+/*                         Function Prototypes                                */
+/*­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­########################################################################### */
+int find_size(const char *string);/*find to size of string.*/
+int char_number(const char *string, const char *wish_to_find);/*find that how
+many times a given string is used in a given string.*/
+
+int main() {
+	int count;/*define the how many times a given string is used in a given 
+	string.*/ 
+	char string[STR_SIZE];/*define the first array*/
+	char wish_to_find[STR_SIZE];/*define the second array*/
+	printf("Lütfen en fazla 50 karakterli bir string giriniz.\n");
+	fgets(string,STR_SIZE,stdin);/*take the string from keyboard*/
+	printf("Lütfen ilk string de aramak istediğiniz en fazla 50 karakterli stringi 	giriniz.\n");
+	fgets(wish_to_find,STR_SIZE,stdin);/*take the wish to find string from 
+	keyboard*/ 
+	count=char_number(string,wish_to_find);/*call the char number function and find 	that how many times a given string is used in a given string.*/
+	printf("2. string 1. string de %d defa tekrarlanmaktadır.",count);
+	
+	return 0;
+}
+
+int find_size(const char *string) /*find to size of string.*/
+{
+	int size=0;/*initialize size*/	
+	if(string[size]!='\0') {/*this control for end of function*/
+		size++;
+		size+=find_size(&string[size]);
+	}
+	return size;
+}
+int char_number(const char *string, const char *wish_to_find)/*find that how
+many times a given string is used in a given string.*/
+{	
+	int size,number;/*define the size and number*/
+	size=find_size(wish_to_find);/*find to size of string*/
+	if(string[0]=='\0') /*this control for end of the function*/
+		number=0;/*initialize number*/ 
+	else 
+		if(strncmp(wish_to_find,string,size-1)==0)/*this control for that
+		find to wish_to_find string*/
+			number=1+char_number(&string[1],wish_to_find);/*number+1
+			assign number and recursive branching*/
+		else
+			number=char_number(&string[1],wish_to_find);/*assign number
+			and recursive branching*/
+	return number;
+}
+	
+/*########################################################################### */
+/*                    End of  HW07_Sahin_Egilmez_131044059_part1.c            */
+/*########################################################################### */	

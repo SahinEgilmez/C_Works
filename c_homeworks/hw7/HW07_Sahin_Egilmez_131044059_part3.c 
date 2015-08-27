@@ -1,0 +1,136 @@
+/*##########################################################################  */
+/*                                                                            */
+/* HW07_Sahin_Egilmez_131044059_part3.c                                       */
+/* 									      */
+/* Created on 12/04/2015 by Sahin Egilmez                                     */
+/*                                                                            */
+/*Description                                                                 */
+/*                                                                            */
+/*C program for find a path on a grid maze                                    */
+/*Inputs:                                                                     */
+/*      - txt file for grid maze                                              */
+/*Outputs:                                                                    */
+/*	- Print to screen path an a grid maze                                 */
+/*########################################################################### */
+/*----------------------------------------------------------------------------*/
+/*                           Includes                                         */
+/*----------------------------------------------------------------------------*/
+#include<stdio.h>
+/*----------------------------------------------------------------------------*/
+/*                           Defines                                          */
+/*----------------------------------------------------------------------------*/
+#define COL_SIZE 5
+#define ROW_SIZE 5
+typedef enum{notavailable,available,right_down}Grid_t;
+typedef enum{FALSE=0,TRUE=1}Bool;
+/*########################################################################### ­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­*/
+/*                         Function Prototypes                                */
+/*­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­########################################################################### */
+void read_table(FILE *input_file, Grid_t table[][COL_SIZE]);/*read file and 
+fill the grid table*/
+void print_path(char path[][COL_SIZE], int n);/*print to screen path*/ 
+Bool find_path(Grid_t table[][COL_SIZE], char path[][COL_SIZE], int size, int location_x,
+int location_y);/*find path on the grid maze*/
+
+int main()
+{	
+	Grid_t table[ROW_SIZE][COL_SIZE];/*define the table array as grid maze*/
+	char path[ROW_SIZE][COL_SIZE];/*define path array as path on grid maze*/
+	Bool res;/*define bool value*/
+	FILE *file;/*define the file*/
+	read_table(file,table);/*read file for fill table array*/
+	res=find_path(table,path,ROW_SIZE,0,0);/*find path on the grid maze*/
+	if(res==TRUE) {/*this control for print to scree path*/
+		printf("Labirentten çıkış yolu aşağıda gösterilmiştir.\n"); 
+		print_path(path,ROW_SIZE);/*print path*/
+	}
+	else /*running if not found path*/
+		printf("Labirentten çıkış yolu bulunamadı!\n");
+	
+	return 0;
+}
+void read_table(FILE *input_file, Grid_t table[][COL_SIZE])/*read file and 
+fill the grid table*/
+{	
+	int number,i,k;/*define the number,i,k*/
+	input_file=fopen("table.txt","r");/*open the file*/
+	 
+		for(i=0;i<ROW_SIZE;i++) {/*this loop fill the array*/
+			for(k=0;k<COL_SIZE;k++)	{
+				fscanf(input_file,"%1d",&number);	
+				table[i][k]=number;
+			}			
+		}
+	
+	fclose(input_file);/*close the file*/
+}
+void print_path(char path[][COL_SIZE], int n)/*print to screen path*/
+{
+	int i,k;/*define the i,k*/
+	
+	for(i=0;i<n;i++) {/*this loop for print array*/
+		for(k=0;k<COL_SIZE;k++) 
+			printf("%c",path[i][k]);
+		printf("\n");
+	}
+}
+
+Bool find_path(Grid_t table[][COL_SIZE], char path[][COL_SIZE], 
+		int size, int x, int y) /*find path on the grid maze*/
+{	
+	int i,k;/*define the i,k*/
+	Bool result=FALSE;/*initialize return value*/
+	if(x==0 && y==0) {/*this control for first location*/
+		for(i=0;i<ROW_SIZE;i++) {/*this loop fill the path array at first 
+					 situation*/
+			for(k=0;k<COL_SIZE;k++) 
+				path[i][k]='|';
+		}
+	}
+	if((x<=size) && (y<=size)) {/*this control for end of function*/
+	
+	if(table[x][y]==available) {/*this control for (x,y)=available situation*/
+		path[x][y]='*';/*fill the array with *  */
+		if(((table[x][y+1]==available || table[x][y+1]==right_down) &&
+		   (table[x][y+2]==available || table[x][y+2]==right_down)) ||
+		   ((table[x][y+1]==available || table[x][y+1]==right_down) &&
+		   (table[x+1][y+1]==available || table[x+1][y+1]==right_down))) 
+		/*this control for next steps*/
+			result=find_path(table,path,ROW_SIZE,x,y+1);/*find path
+			and assign result*/
+			
+		else if(((table[x+1][y]==available || table[x+1][y]==right_down) &&
+		   (table[x+1][y+1]==available || table[x+1][y+1]==right_down)) ||
+		   ((table[x+1][y]==available || table[x+1][y]==right_down) &&
+		   (table[x+2][y]==available || table[x+2][y]==right_down)))
+		/*this control for next steps*/	
+			result=find_path(table,path,ROW_SIZE,x+1,y);/*find path 
+			and assign result*/
+		else if((x+1)==size-1  ) {/*this loop for fill end of grid maze*/
+			path[x+1][y]='*';/*fill end of path*/
+			result=TRUE;/*assign result*/
+		}
+		else if((y+1)==size-1) {/*this loop for fill end of grid maze*/
+			path[x][y+1]='*';/*fill end of path*/
+			result=TRUE;/*assign result*/
+		}
+	}	
+	else if(table[x][y]==right_down) {/*this loop for right down situation*/
+		path[x][y]='*';/*fill the (x,y)*/
+		if(table[x+1][y+1]==available)/*this control for next steps*/
+			result=find_path(table,path,ROW_SIZE,x+1,y+1);/*find path
+			and assign result*/
+		
+		}
+	}
+	if(x==size-1 && y==size-1)/*this control for last recursive branching*/ 	
+		result=TRUE;/*assign result*/
+	
+	
+	return result;/*return result*/
+}
+
+/*########################################################################### */
+/*                    End of  HW07_Sahin_Egilmez_131044059_part3.c            */
+/*########################################################################### */
+

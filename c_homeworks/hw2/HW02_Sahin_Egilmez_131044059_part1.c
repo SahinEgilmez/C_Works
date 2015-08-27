@@ -1,0 +1,92 @@
+/*##########################################################################  */
+/*                                                                            */
+/* HW2_Sahin_Egilmez_131044059_part1.c                                        */
+/* 									      */
+/* Created on 01/03/2015 by Sahin Egilmez                                     */
+/*                                                                            */
+/*Description                                                                 */
+/*                                                                            */
+/*C program for “Guessing An Integer Number” game.                            */
+/*Inputs:                                                                     */
+/*      - Player's option for play(P/p) or exit(E/e)                          */
+/*	- Random number between 1 to 10                                       */
+/*	- Player's guess              					      */
+/*Outputs:                                                                    */
+/*	- screen feedback for guess                                           */
+/*########################################################################### */
+/*----------------------------------------------------------------------------*/
+/*                           Includes                                         */
+/*----------------------------------------------------------------------------*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+/*########################################################################### ­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­*/
+/*                         Function Prototypes                                */
+/*­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­########################################################################### */
+int RNG();
+int CalculateTheDifference(int guess, int number);
+void WarnThePlayer();
+
+int main()
+{	
+	int  a1, a2, guess1, guess2, x1, x2;/*defines number,guess,difference */
+	/*For 1st number.*/
+	a1=RNG();/*calculate 1st number*/
+	printf("Guess please?\n");/*wants guess*/
+	scanf("%d", &guess1);/*read guess*/
+	printf("Your guess= %d\n", guess1);
+	x1=CalculateTheDifference(guess1, a1);/*calculates the difference*/
+	WarnThePlayer(x1, guess1);/*writes the results*/
+	/*For 2nd number*/
+	a2=RNG();/*calculate 2nd number*/
+	printf("Guess(between 1-10) please?\n");/*wants guess*/
+	scanf("%d", &guess2);/*read guess*/
+	printf("Your guess= %d\n", guess2);
+	x2=CalculateTheDifference(guess2, a2);/*calculate the difference*/
+	WarnThePlayer(x2,guess2);/*writes the results*/
+
+
+}
+
+/*this functions calculates the number*/
+int RNG(void)
+{	int number;
+	srand(time(NULL));
+	number=rand()%10+1;
+	return number;
+}
+
+/*this functions calculates the difference*/
+int CalculateTheDifference(int guess, int number)
+{
+	int x;
+	if(number>=guess) 
+	x=number-guess;
+	else
+	x=guess-number ;
+	
+	return x;
+
+}
+
+/*this functions to print a warning in order to guide the player.*/
+void WarnThePlayer(int x, int number)
+{	
+
+	if(number>10 || number<1)
+	printf("Wrong guess! Please enter number between 1 and 10.\n");
+	else if(x>=5)
+	printf("You are too far from the number\n");
+	else if(x>=3)
+	printf("You are far from the number\n");
+	else if(x>=1) 
+	printf("You are close to the number\n");
+	else
+	printf("Congrulations, true guess.\n");
+}
+
+/*########################################################################### */
+/*                    End of  HW2_Sahin_Egilmez_131044059_part1.c             */
+/*########################################################################### */
+
+

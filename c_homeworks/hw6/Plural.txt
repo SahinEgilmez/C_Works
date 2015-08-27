@@ -1,0 +1,9 @@
+evler
+otobuslar
+cicekler
+cantaler
+anahtarlar
+mezarlar
+hayatlar
+deryalar
+oneriler

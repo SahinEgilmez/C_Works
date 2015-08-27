@@ -1,0 +1,7 @@
+No – The Rebounching Height -- The Total vertical Distance
+1      35.000000                 35.000000
+2      15.557500                 66.115000
+3      6.915309                 79.945618
+4      3.073855                 86.093327
+5      1.366328                 88.825984
+The bouncing is stopped and the task completed...
